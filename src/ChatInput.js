@@ -1,22 +1,53 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import './ChatInput.css';
+import "./ChatInput.css"
+import db from "./firebase"
+import firebase from 'firebase/compat/app';
+import { useStateValue } from "./StateProvider";
 
-function ChatInput({channelName , channelId}) {
-
-    const[input, setInput] = useState('');
+function ChatInput( {channelName , channelId} ) {
+    const [input , setInput] = useState("");
+    const [{ user }] = useStateValue()
 
     const sendMessage = (e) => {
-        e.preventDefault();
-    }
+		e.preventDefault()
+
+		if (!input) return false
+
+		if (channelId) {
+			db.collection('rooms').doc(channelId).collection('messages').add({
+				message: input,
+				timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+				user: user.displayName,
+				userImage: user.photoURL,
+			})
+		}
+        
+		setInput("")
+	}
+
+
+
 
   return (
-    <div className="charInput">
-      <form>
-        <input value={input} onChange={e => setInput(e.target.value)} placeholder={`Message #${channelName}`} />
-        <button type="submit" inClick={sendMessage}>SEND</button>
-      </form>
+    <div className='chatInput'>
+        <form>
+			<input
+				value={input}
+				onChange={(e) => setInput(e.target.value)}
+				placeholder={`Message #${channelName}`}
+                onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                    }
+                }}
+			/>
+			<button type="submit" onClick={sendMessage}>
+				SEND
+			</button>
+		</form>   
     </div>
-  );
+  )
 }
 
-export default ChatInput;
+export default ChatInput

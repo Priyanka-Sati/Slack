@@ -49,3 +49,24 @@
     background-color: white;
     border-radius: 999px;
 }
+
+.sidebar_channels{
+    height: 27vh;
+    overflow-y: scroll;
+    
+}
+
+.sidebar_channels::-webkit-scrollbar{
+    width: 10px; 
+}
+
+.sidebar_channels::-webkit-scrollbar-track {
+    background: #49274b;        /* color of the tracking area */
+    
+  }
+
+  .sidebar_channels::-webkit-scrollbar-thumb {
+    background-color: #9370DB;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid var(--slack-color);  /* creates padding around scroll thumb */
+  }
